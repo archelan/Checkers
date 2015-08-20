@@ -38,7 +38,8 @@ public class MainClass {
 					}
 					}
 				}
-				System.out.print("Choose correct game mode.");
+				System.out.println("Game Over.");
+				System.out.println("Choose game mode.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

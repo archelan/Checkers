@@ -20,4 +20,8 @@ public class Move {
 	int getXDiff(){
 		return end.x - start.x;
 	}
+	@Override
+	public String toString() {
+		return start.toString()+end.toString()+"("+ color + ")";
+	}
 }
