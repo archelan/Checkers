@@ -13,4 +13,8 @@ public class Utils {
 	public static int invertColor(int color){
 		return color == 1 ? 2 : 1;
 	}
+	
+	static int getRightDirection(int color){
+		return color == 1 ? 1 : -1;
+	}
 }

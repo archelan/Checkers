@@ -2,7 +2,7 @@
 public class BoardDrawer {
 	static void drawBoard(Board board){
 		try {
-			int printDelay = 10;
+			int printDelay = 0;
 			outDelayPrint(" |");
 			for (int x = 0; x < 8; x++) {
 				outDelayPrint((char)('a'+x));

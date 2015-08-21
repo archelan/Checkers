@@ -13,11 +13,13 @@ public class Board {
 				Check c = null;
 				Position pos = new Position(x, y);
 				if (pos.isFirstStartPos())
-					c = new Check(1);
+					c = new Check(1, this, pos);
 				else if (pos.isSecondStartPos())
-					c = new Check(2);
-				checks.add(c);
-				field[x][y] = new Field(pos,c);				
+					c = new Check(2, this, pos);
+				if (c!=null) {
+					checks.add(c);					
+				}
+				field[x][y] = new Field(pos,c);
 			}
 		}
 	}
@@ -35,10 +37,6 @@ public class Board {
 		BoardDrawer.drawBoard(this);
 		return true;		
 	}
-	
-	public boolean isLegalMove(Move move){
-		return move.isLegal();
-	}
 
 	Check getCheck(Position pos){
 		return field[pos.x][pos.y].check;
@@ -51,6 +49,7 @@ public class Board {
 	
 	private void removeCheck(Position pos){
 		field[pos.x][pos.y].check = null;
+		checks.removeIf(a -> a.getPos().x == pos.x && a.getPos().y == pos.y);
 	}
 	
 	private void moveCheck(Move move){
@@ -59,4 +58,25 @@ public class Board {
 		removeCheck(move.start);		
 	}
 
+	public ArrayList<Move> possibleMoves(Check check){
+		ArrayList<Move> result = possibleRegularMoves();
+		result.addAll(possibleCaptureMoves());
+		return result;
+	}
+	
+	public ArrayList<Move> possibleRegularMoves(){
+		ArrayList<Move> result = new ArrayList<Move>();
+		for (Check check: checks){
+			result.addAll(check.getPossibleRegularMoves());
+		}
+		return result;
+	}
+	
+	public ArrayList<Move> possibleCaptureMoves(){
+		ArrayList<Move> result = new ArrayList<Move>();
+		for (Check check: checks){
+			result.addAll(check.getPossibleCaptureMoves());
+		}
+		return result;
+	}
 }

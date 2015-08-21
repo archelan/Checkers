@@ -53,7 +53,7 @@ public class Move {
 			System.out.println("Can't move Queens yet, sorry(");
 			return false;
 		} else {			
-			if (getYDiff() == getRightDirection()){
+			if (getYDiff() == Utils.getRightDirection(color)){
 				return true;
 			} else {
 				return false;
@@ -72,7 +72,7 @@ public class Move {
 											(start.y+end.y)/2);
 			Check checkToCapture = board.getCheck(posToCapture);
 			if (checkToCapture != null &&
-				checkToCapture.getColor() != this.color) {
+				checkToCapture.getColor() != color) {
 				return posToCapture;
 			} else {
 				return null;
@@ -80,9 +80,5 @@ public class Move {
 		} else {
 			return null;
 		}
-	}
-	
-	int getRightDirection(){
-		return this.color == 1 ? 1 : -1;
 	}
 }
