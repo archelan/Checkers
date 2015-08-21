@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Move {
 	final Position start, end;
@@ -29,6 +31,12 @@ public class Move {
 	int getXDiff(){
 		return end.x - start.x;
 	}
+	int getYDir(){
+		return getYDiff()/Math.abs(getYDiff());
+	}
+	int getXDir(){
+		return getXDiff()/Math.abs(getXDiff());
+	}
 	@Override
 	public String toString() {
 		return start.toString()+end.toString()+"("+ color + ")";
@@ -50,8 +58,11 @@ public class Move {
 		if (!isPartiallyCorrect()) return false;
 		Check check = board.getCheck(start);
 		if (check.isQueen()) {
-			System.out.println("Can't move Queens yet, sorry(");
-			return false;
+			if (board.checksWithinMove(this).isEmpty()) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {			
 			if (getYDiff() == Utils.getRightDirection(color)){
 				return true;
@@ -62,23 +73,33 @@ public class Move {
 	}
 	
 	public boolean isCapture(){
-		return getPosToCapture() == null ? false : true;
+		return getCheckToCapture() == null ? false : true;
 	}
 	
-	public Position getPosToCapture(){
+	public Check getCheckToCapture(){
 		if (!isPartiallyCorrect()) return null;
-		if (Math.abs(getYDiff()) == 2){
-			Position posToCapture = new Position((start.x+end.x)/2, 
-											(start.y+end.y)/2);
-			Check checkToCapture = board.getCheck(posToCapture);
-			if (checkToCapture != null &&
-				checkToCapture.getColor() != color) {
-				return posToCapture;
+		Check check = board.getCheck(start);
+		if (check.isQueen()) {
+			ArrayList<Check> checks = board.checksWithinMove(this);
+			if (checks.size() == 1 && checks.get(0).getColor() != color) {
+				return checks.get(0);
 			} else {
 				return null;
 			}
 		} else {
-			return null;
+			if (Math.abs(getYDiff()) == 2){
+				Check checkToCapture = board.getCheck(
+						new Position((start.x+end.x)/2,
+									(start.y+end.y)/2));
+				if (checkToCapture != null &&
+					checkToCapture.getColor() != color) {
+					return checkToCapture;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
 		}
 	}
 }

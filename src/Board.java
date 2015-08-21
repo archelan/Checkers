@@ -28,9 +28,9 @@ public class Board {
 		if (move.isRegular()) {
 			moveCheck(move);
 		} else if (move.isCapture()) {			
-			removeCheck(move.getPosToCapture());
+			removeCheck(move.getCheckToCapture().getPos());
 			moveCheck(move);
-			System.out.println(move.getPosToCapture() + " captured!");
+			System.out.println(move.getCheckToCapture() + " captured!");
 		} else {
 			return false;
 		}
@@ -58,24 +58,37 @@ public class Board {
 		removeCheck(move.start);		
 	}
 
-	public ArrayList<Move> possibleMoves(Check check){
-		ArrayList<Move> result = possibleRegularMoves();
-		result.addAll(possibleCaptureMoves());
+	public ArrayList<Move> possibleMoves(Check check, int color){
+		ArrayList<Move> result = possibleRegularMoves(color);
+		result.addAll(possibleCaptureMoves(color));
 		return result;
 	}
 	
-	public ArrayList<Move> possibleRegularMoves(){
+	public ArrayList<Move> possibleRegularMoves(int color){
 		ArrayList<Move> result = new ArrayList<Move>();
 		for (Check check: checks){
-			result.addAll(check.getPossibleRegularMoves());
+			if (check.getColor() == color)
+				result.addAll(check.getPossibleRegularMoves());
 		}
 		return result;
 	}
 	
-	public ArrayList<Move> possibleCaptureMoves(){
+	public ArrayList<Move> possibleCaptureMoves(int color){
 		ArrayList<Move> result = new ArrayList<Move>();
 		for (Check check: checks){
-			result.addAll(check.getPossibleCaptureMoves());
+			if (check.getColor() == color)
+				result.addAll(check.getPossibleCaptureMoves());
+		}
+		return result;
+	}
+
+	public ArrayList<Check> checksWithinMove(Move move) {
+		ArrayList<Check> result = new ArrayList<Check>();
+		for (int x = move.start.x + move.getXDir(),
+				y = move.start.y + move.getYDir();
+				x != move.end.x && y != move.end.y;
+				x += move.getXDir(), y += move.getYDir()){
+			if (field[x][y].check != null) result.add(field[x][y].check);
 		}
 		return result;
 	}

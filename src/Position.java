@@ -59,4 +59,8 @@ public class Position {
 	public String toString() {
 		return ConsoleUtils.xToLetter(x) + "" + ConsoleUtils.yToNumber(y);
 	}
+
+	public boolean isSame(Position pos) {		
+		return (this.x == pos.x && this.y == pos.y) ? true : false;
+	}
 }

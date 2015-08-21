@@ -11,13 +11,13 @@ public class BotPlayer extends Player {
 
 	@Override
 	public boolean makeMove() {
-		ArrayList<Move> moves = board.possibleCaptureMoves();
+		ArrayList<Move> moves = board.possibleCaptureMoves(color);
 		if (!moves.isEmpty()) {
-			return move(moves);
+			return selectRandom(moves);
 		} else {
-			moves = board.possibleRegularMoves();
+			moves = board.possibleRegularMoves(color);
 			if (!moves.isEmpty()) {
-				return move(moves);			
+				return selectRandom(moves);			
 			} else {
 				System.out.println("Bot bug. Impossible move");
 				System.exit(0);
@@ -26,7 +26,7 @@ public class BotPlayer extends Player {
 		}
 	}
 
-	private boolean move(ArrayList<Move> moves){
+	private boolean selectRandom(ArrayList<Move> moves){
 		Random rnd = new Random();
 		if (!board.tryMakeMove(moves.get(rnd.nextInt(moves.size())))) {
 			System.out.println("Bot bug. Impossible move");

@@ -31,38 +31,53 @@ public class Check {
 	
 	public ArrayList<Move> getPossibleRegularMoves(){
 		ArrayList<Move> result = new ArrayList<Move>();
-		if (isQueen) {
-			return result;
+		ArrayList<Move> moves = new ArrayList<Move>();
+		if (isQueen) {			
+			for (int i = -7; i <= 7; i++) {
+				for (int j = -7; j <= 7; j++) {
+					moves.add(MoveGen.gen(pos.x, pos.y, 
+							pos.x + i, pos.y + j, color, board));
+				}
+			}
 		} else {
-			Move rightMove = MoveGen.gen(pos.x, pos.y,
+			moves.add(MoveGen.gen(pos.x, pos.y,
 					pos.x + 1, pos.y + Utils.getRightDirection(color),
-					color, board);			
-			Move leftMove = MoveGen.gen(pos.x, pos.y,
+					color, board));			
+			moves.add(MoveGen.gen(pos.x, pos.y,
 					pos.x - 1, pos.y + Utils.getRightDirection(color),
-					color, board);
-			
-			if (rightMove != null && rightMove.isRegular()) result.add(rightMove);
-			if (leftMove != null && leftMove.isRegular()) result.add(leftMove);
-			return result;
+					color, board));			
 		}
+		moves.forEach(move -> {
+			if (move != null && move.isRegular()) result.add(move);
+		});
+		return result;
 	}
 	
 	public ArrayList<Move> getPossibleCaptureMoves(){
 		ArrayList<Move> result = new ArrayList<Move>();
+		ArrayList<Move> moves = new ArrayList<Move>();
 		if (isQueen) {
-			return result;
+			for (int i = -7; i <= 7; i++) {
+				for (int j = -7; j <= 7; j++) {
+					moves.add(MoveGen.gen(pos.x, pos.y, 
+							pos.x + i, pos.y + j, color, board));
+				}
+			}
 		} else {
-			Move rightMove = MoveGen.gen(pos.x, pos.y,
+			moves.add(MoveGen.gen(pos.x, pos.y,
 					pos.x + 2, pos.y + 2 * Utils.getRightDirection(color),
-					color, board);			
-			Move leftMove = MoveGen.gen(pos.x, pos.y,
+					color, board));			
+			moves.add(MoveGen.gen(pos.x, pos.y,
 					pos.x - 2, pos.y + 2 * Utils.getRightDirection(color),
-					color, board);
-			
-			if (rightMove != null && rightMove.isCapture()) result.add(rightMove);
-			if (leftMove != null && leftMove.isCapture()) result.add(leftMove);
-			
-			return result;
+					color, board));
 		}
+		moves.forEach(move -> {
+			if (move != null && move.isCapture()) result.add(move);
+		});
+		return result;
+	}
+	@Override
+	public String toString() {		
+		return pos.toString() + "(" + color + ")" + (isQueen ? "Q" : "");
 	}
 }
