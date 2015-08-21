@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream.GetField;
 
 
 public class MainClass {
@@ -11,37 +12,33 @@ public class MainClass {
 			System.err.println((int) c);
 		}*/
 		//System.exit(0);
-		System.out.println("Welcome to Shahki!\nChoose game mode:");
-		System.out.println("1 - two players");
-		System.out.println("2 - game replay");
+		String startMessage = "Welcome to Shahki!\nChoose game mode:\n" +
+		"1 - two players\n" + "2 - play against bot\n" +
+		"3 - Bot match\n" + "9 - game replay\n";
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while(true) {
-			try {
-				String s = br.readLine();
-				if (s.length() == 1) {
-					switch (s.charAt(0)){
-					case '1': {
-						Board board = new Board();		
-						Player first = new HumanPlayer(board, 1),
-							   second = new HumanPlayer(board, 2);
-						
-						BoardDrawer.drawBoard(board);
-						while (true) {			
-							first.makeMove();		
-							second.makeMove();
-						}
-						//break;
-					}
-					case '2': {
-						ReplayWatcher.start();						
-						//break;
-					}
-					}
+			int gameType = ConsoleUtils.getInt(br, 1, 9, startMessage);
+			if (gameType == 9) {
+				ReplayWatcher.start();
+			} else if (gameType >= 1 && gameType <= 3) {
+				Player first = null, second = null;
+				Board board = new Board();
+				if (gameType == 1) {
+					first = new HumanPlayer(board, 1);
+					second = new HumanPlayer(board, 2);
+				} else if (gameType == 2) {
+					int color = ConsoleUtils.getInt(br, 1, 2, "Select your color(1 or 2).");
+					Player human = new HumanPlayer(board, color);
+					Player bot = new BotPlayer(board, Utils.invertColor(color));
+					first = color == 1 ? human : bot;
+					second = color == 2 ? human : bot;
+				} else if (gameType == 3) {
+					first = new BotPlayer(board, 1);
+					second = new BotPlayer(board, 2);
 				}
-				System.out.println("Game Over.");
-				System.out.println("Choose game mode.");
-			} catch (IOException e) {
-				e.printStackTrace();
+				BoardDrawer.drawBoard(board);
+				while (first.makeMove() && second.makeMove()) {					
+				}
 			}
 		}
 

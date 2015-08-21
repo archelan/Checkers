@@ -1,7 +1,7 @@
 
 public class Check {
 	private final int color;
-	private Position pos;//TODO really weird
+	private Position pos;//warning is really weird
 	private boolean isQueen = false;
 	Check(int color){
 		this.color = color;
@@ -17,7 +17,8 @@ public class Check {
 	}
 	void move(Position pos) {		
 		this.pos = pos;
-		if (color == 1 && Utils.isTopRow(pos)) makeQueen();
-		if (color == 2 && Utils.isBottomRow(pos)) makeQueen();				
+		if (color == 1 && pos.isTopRow()) makeQueen();
+		if (color == 2 && pos.isBottomRow()) makeQueen();				
 	}
+	
 }

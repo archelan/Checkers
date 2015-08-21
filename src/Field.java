@@ -9,10 +9,10 @@ public class Field {
 	}
 
 	boolean isWhite(){
-		return Utils.isWhiteField(pos); 
+		return pos.isWhiteField(); 
 	}
 	
 	boolean isBlack(){
-		return Utils.isBlackField(pos);
+		return pos.isBlackField();
 	}
 }

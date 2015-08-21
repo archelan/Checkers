@@ -10,11 +10,11 @@ public class HumanPlayer extends Player{
 	}
 
 	@Override
-	void makeMove() {		
+	boolean makeMove() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
         	while (true) {
-        		Move move = ConsoleUtils.stringToMove(br.readLine(), color);
+        		Move move = ConsoleUtils.stringToMove(br.readLine(), color, board);
         		if (move != null && board.tryMakeMove(move)) {        		
         			break;
         		} else {
@@ -26,6 +26,7 @@ public class HumanPlayer extends Player{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        return true;
 	}
 	
 }

@@ -18,14 +18,14 @@ public class ReplayWatcher {
         		while (true) {
         			String s = fr.readLine();
         			if (s == null) return;
-            		Move move = ConsoleUtils.stringToMove(s, color);
+            		Move move = ConsoleUtils.stringToMove(s, color, board);
             		if (move != null && board.tryMakeMove(move)) {
             			color = Utils.invertColor(color);
             			continue;
             		} else {
             			System.exit(0);
             		}
-            	}
+            	}        		
         	}			
 		} catch (IOException e) {
 			e.printStackTrace();
