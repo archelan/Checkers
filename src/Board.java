@@ -27,10 +27,10 @@ public class Board {
 	public boolean tryMakeMove(Move move){
 		if (move.isRegular()) {
 			moveCheck(move);
-		} else if (move.isCapture()) {			
+		} else if (move.isCapture()) {
+			System.out.println(move.getCheckToCapture() + " captured!");
 			removeCheck(move.getCheckToCapture().getPos());
 			moveCheck(move);
-			System.out.println(move.getCheckToCapture() + " captured!");
 		} else {
 			return false;
 		}

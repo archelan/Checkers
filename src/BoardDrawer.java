@@ -1,42 +1,37 @@
 
 public class BoardDrawer {
+	static int printDelay = 5;
 	static void drawBoard(Board board){
-		try {
-			int printDelay = 0;
-			outDelayPrint(" |");
+		outDelayPrint(" |");
+		for (int x = 0; x < 8; x++) {
+			outDelayPrint((char)('a'+x));
+		}
+		outDelayPrint("|");
+		outDelayPrintln();
+		for (int y = 7; y >= 0; y--) {
+			outDelayPrint((y+1) + "|");
 			for (int x = 0; x < 8; x++) {
-				outDelayPrint((char)('a'+x));
-			}
-			outDelayPrint("|");
-			outDelayPrintln();
-			for (int y = 7; y >= 0; y--) {
-				outDelayPrint((y+1) + "|");				
-				Thread.sleep(printDelay);
-				for (int x = 0; x < 8; x++) {			
-					Check check = board.getCheck(new Position(x, y));
-					if (check == null) {
-						outDelayPrint('.');						
+				Check check = board.getCheck(new Position(x, y));
+				if (check == null) {
+					outDelayPrint('.');						
+				} else {
+					char figure = check.isQueen() ? 'Q' : (char)174;
+					if (check.getColor() == 1) {
+						errDelayPrint(figure);
 					} else {
-						char figure = check.isQueen() ? 'Q' : (char)174;
-						if (check.getColor() == 1) {
-							errDelayPrint(figure);
-						} else {
-							outDelayPrint(figure);
-						}
+						outDelayPrint(figure);
 					}
 				}
-				outDelayPrint("|" + (y+1));
-				outDelayPrintln();
 			}
-			outDelayPrint(" |");
-			for (int x = 0; x < 8; x++) {
-				outDelayPrint((char)('a'+x));
-			}
-			outDelayPrint("|");
+			outDelayPrint("|" + (y+1));
 			outDelayPrintln();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
+		outDelayPrint(" |");
+		for (int x = 0; x < 8; x++) {
+			outDelayPrint((char)('a'+x));
+		}
+		outDelayPrint("|");
+		outDelayPrintln();
 	}
 	
 	private static <T> void outDelayPrint(T t){
@@ -63,9 +58,8 @@ public class BoardDrawer {
 	private static void flushAndWait() {
 		System.out.flush();
 		try {
-			Thread.sleep(5);
+			Thread.sleep(printDelay);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
